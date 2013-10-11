@@ -1,0 +1,235 @@
+#+TITLE: Org-mode Org-babel talk
+#+AUTHOR: Tim Lu
+#+EMAIL: tlu@trovagene.com
+#+OPTIONS: num:nil ^:nil f:nil
+#+STARTUP: hideblocks
+
+* Introduction
+  Tired of cutting/pasting or highlighting/executing your R commands? 
+  Looking for a way to document your work as you do it? 
+  Learn about Org-babel in Emacs and literate programming to streamline your work paradigm! 
+
+* About Tim
+  Tim is a bioinformatics scientist who has been using R for 10 years. 
+  He made the agonizing switch from vi enthusiast to emacs evangalist 
+  when he discovered org-babel three years ago.
+ 
+* About this talk
+Note: emacs commands are written in /italics/. 
+C- means control key plus ..., and M- means meta(alt) key plus ....
+
+* About Emacs
+** The kitchen-sink editor!
+- I won't list features here, trust me, it's a long list.
+- Runs on Windows and Mac and Linux (I'm using Ubuntu)
+
+** Drawbacks
+Learning Curve Ahead! 
+Installation of some features may be a pain.
+You have to learn a lot of arcane kestroke combinations,
+for example: instead of C-c, C-v it's M-w, C-y
+- Really? WTF?
+
+* About Org-mode for Emacs
+  - Easy, just edit a file in Emacs with the .org extension and you are in org mode!
+  - Motto: Your Life in Plain Text
+  - Org-mode includes many features like:
+    - Outlines (what you've seen so far) 
+    - Planning (ToDo, schedules, dates, tags)
+    - Clocking
+    - Agendas
+    - Tables
+    - Import/Export
+    - Working with source code = Org-babel
+
+* Finally, Org-babel in Org-mode
+** Getting Started
+Let's use the famous 1936 iris data set from R.A. Fisher, evolutionary biologist and the father of modern statistics.
+http://en.wikipedia.org/wiki/Iris_flower_data_set
+It comes installed with R.
+
+** Language markup
+   Create a code block for your code
+   C-c C-c to execute!
+
+What version of R am I using?
+#+BEGIN_SRC R
+getRversion()
+#+END_SRC
+
+Here is a peek at the first few lines of the iris data set.
+#+BEGIN_SRC R :results output 
+head(iris)
+#+end_src
+ 
+We have seen a variable and a data frame, how about a list?
+#+BEGIN_SRC R :results output 
+R.Version()
+#+END_SRC
+
+** Other header arguments 
+*** results
+     :results [collection] [type] [format] [handling]
+             - collection: value|output
+             - type: table|vector|list|scalar|file|graphics
+             - format: raw|org|html|latex|code|pp|drawer
+             - handling: silent|replace|append|prepend
+
+#+BEGIN_SRC R :results output
+head(iris)
+#+END_SRC
+
+*** session
+     :session <name>
+     - Make up a name that makes sense to you. 
+     - I put stars around the name so that it looks like an emacs named interactive shell (which it is)
+     - FIELDTRIP: visit the session buffer yourself!
+
+#+BEGIN_SRC R :results output
+iris.head<-head(iris)
+#+END_SRC
+
+#+BEGIN_SRC R :results output
+dim(iris.head)
+#+END_SRC
+
+*** plots
+     - Use :results output graphics
+     - A session needs to be named, otherwise the default session closes immediately and you don't see your plot.
+     - A file needs to be specified.
+
+#+BEGIN_SRC R :session *Rtalk* :results output graphics :exports results :file plot1.png
+attach(iris)
+plot(Sepal.Length,Sepal.Width)
+detach(iris)
+#+END_SRC
+
+#+BEGIN_SRC R :session *Rtalk* :results output graphics :exports results
+# I had to set this in R on my Ubuntu installation to get plots to display without resizing
+# X11.options(type="xlib")
+attach(iris)
+plot(Sepal.Length,Sepal.Width)
+detach(iris)
+#+END_SRC
+
+- Lots of additional options avaiable for captions, labels, plot position, plot size, etc.
+
+*** exports 
+     :exports code|results|both|none
+**** :exports code
+
+#+BEGIN_SRC R :results output table :exports code
+head(iris)
+#+END_SRC
+
+**** :exports results
+
+#+BEGIN_SRC R :results output table :exports results
+head(iris)
+#+END_SRC
+
+**** :exports both 
+
+#+BEGIN_SRC R :results output table :exports both
+head(iris)
+#+END_SRC
+
+**** :exports none
+
+#+BEGIN_SRC R :results output table :exports none
+head(iris)
+#+END_SRC
+
+**** Export to a web page
+     - Specify which program will open your html file 
+       *In my example I want chrome-browser to open my html:
+     - /M-x customize-variable/ then type /org-file-apps/. Then associate Extension \.pdf\' with Command: chrome-browser %s
+     - Don't forget to save and exit!
+
+**** Export to a pdf via LaTeX
+     - Requirements:
+       - Install LaTeX to pdf (texlive-latex-extra for pdflatex on Ubuntu)
+       - Specify which program will open your pdf file 
+         *In my example I want evince to open my pdf:
+       - /M-x customize-variable/ then type /org-file-apps/. Then associate Extension \.pdf\' with Command: evince %s
+       - Don't forget to save and exit!
+
+**** Export to beamer
+     An excercise left for the reader. ;p
+
+*** For more header arguments, see Links & Resources DOUBLE BRACKETS!
+
+* Literate Programming
+  - Idea of Donald Knuth, 1984, the father of analysis of algorithms
+  - Instead of commenting your code, code to your comments.
+  - You already know how to do it, this document is an example! (sort of)
+  - Reasons for reproducible research
+    - The paradigm of science
+    - Pure egoism... imagine that
+* Installation
+  - Edit your .emacs file, add this (for example):
+#+BEGIN_EXAMPLE
+;; Org-babel
+(package-initialize)
+(require 'ob)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (R . t)
+  ))
+ 
+(provide 'ob-R)
+
+(setq org-src-fontify-natively t)
+(setq org-confirm-babel-evaluate nil)
+
+(org-reload)
+#+END_EXAMPLE
+  - Take a look at http://orgmode.org/worg/org-faq.html
+  - What I showed here was for Ubuntu. Windows (and other Linux) etc. may be different.
+
+* Tips and Tricks
+- Explore the menus
+- Not just for R! You can org-babel in shell, python, perl, ruby, C/C++ and many, many more.
+  Just add them to your .emacs configuration definition.
+- Attaching to a remove R Server
+#+BEGIN_EXAMPLE
+   /M-x shell/ 
+   /M-x ess-remote/
+   /M-x rename-buffer *something*/
+  I like to put stars around the buffer name so that it looks like an interactive shell (which it is)
+#+END_EXAMPLE
+- To open all org-babel blocks at once
+#+BEGIN_EXAMPLE
+   /M-x org-show-block-all/
+#+END_EXAMPLE
+- Org-mode and Org-babel are still evolving!
+   Things you have learned today may change.
+* Links & Resources
++ Emacs
++ Org-mode   http://orgmode.org/
+           - http://orgmode.org/talks.html Tech Talk at Google video, plus more
+           - http://orgmode.org/worg/index.html Org-Mode Resources
++ Org-babel  http://orgmode.org/worg/org-contrib/babel/ General
+           - http://orgmode.org/manual/Working-With-Source-Code.html More specific
+           - http://orgmode.org/worg/org-contrib/babel/how-to-use-Org-Babel-for-R.html with R
+           - http://orgmode.org/manual/Specific-header-arguments.html#Specific-header-arguments Header arguments
++ Literate Progamming http://www.cs.tufts.edu/~nr/noweb/
++ Reproducible Research http://www.rrplanet.com/ 
+                     -  http://reproducibleresearch.net/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

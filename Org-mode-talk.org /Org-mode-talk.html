@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Org-mode Org-babel talk</title>
+<!-- 2013-10-11 Fri 07:45 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Tim Lu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012  Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Org-mode Org-babel talk</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Introduction</a></li>
+<li><a href="#sec-2">About Tim</a></li>
+<li><a href="#sec-3">About this talk</a></li>
+<li><a href="#sec-4">About Emacs</a>
+<ul>
+<li><a href="#sec-4-1">The kitchen-sink editor!</a></li>
+<li><a href="#sec-4-2">Drawbacks</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">About Org-mode for Emacs</a></li>
+<li><a href="#sec-6">Finally, Org-babel in Org-mode</a>
+<ul>
+<li><a href="#sec-6-1">Getting Started</a></li>
+<li><a href="#sec-6-2">Language markup</a></li>
+<li><a href="#sec-6-3">Other header arguments</a>
+<ul>
+<li><a href="#sec-6-3-1">results</a></li>
+<li><a href="#sec-6-3-2">session</a></li>
+<li><a href="#sec-6-3-3">plots</a></li>
+<li><a href="#sec-6-3-4">exports</a></li>
+<li><a href="#sec-6-3-5">For more header arguments, see Links &amp; Resources DOUBLE BRACKETS!</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-7">Literate Programming</a></li>
+<li><a href="#sec-8">Installation</a></li>
+<li><a href="#sec-9">Tips and Tricks</a></li>
+<li><a href="#sec-10">Links &amp; Resources</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Tired of cutting/pasting or highlighting/executing your R commands? 
+Looking for a way to document your work as you do it? 
+Learn about Org-babel in Emacs and literate programming to streamline your work paradigm! 
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">About Tim</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Tim is a bioinformatics scientist who has been using R for 10 years. 
+He made the agonizing switch from vi enthusiast to emacs evangalist 
+when he discovered org-babel three years ago.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">About this talk</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Note: emacs commands are written in <i>italics</i>. 
+C- means control key plus &#x2026;, and M- means meta(alt) key plus &#x2026;.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">About Emacs</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1">The kitchen-sink editor!</h3>
+<div class="outline-text-3" id="text-4-1">
+<ul class="org-ul">
+<li>I won't list features here, trust me, it's a long list.
+</li>
+<li>Runs on Windows and Mac and Linux (I'm using Ubuntu)
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2">Drawbacks</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+Learning Curve Ahead! 
+Installation of some features may be a pain.
+You have to learn a lot of arcane kestroke combinations,
+for example: instead of C-c, C-v it's M-w, C-y
+</p>
+<ul class="org-ul">
+<li>Really? WTF?
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">About Org-mode for Emacs</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>Easy, just edit a file in Emacs with the .org extension and you are in org mode!
+</li>
+<li>Motto: Your Life in Plain Text
+</li>
+<li>Org-mode includes many features like:
+<ul class="org-ul">
+<li>Outlines (what you've seen so far) 
+</li>
+<li>Planning (ToDo, schedules, dates, tags)
+</li>
+<li>Clocking
+</li>
+<li>Agendas
+</li>
+<li>Tables
+</li>
+<li>Import/Export
+</li>
+<li>Working with source code = Org-babel
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Finally, Org-babel in Org-mode</h2>
+<div class="outline-text-2" id="text-6">
+</div><div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1">Getting Started</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+Let's use the famous 1936 iris data set from R.A. Fisher, evolutionary biologist and the father of modern statistics.
+<a href="http://en.wikipedia.org/wiki/Iris_flower_data_set">http://en.wikipedia.org/wiki/Iris_flower_data_set</a>
+It comes installed with R.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6-2" class="outline-3">
+<h3 id="sec-6-2">Language markup</h3>
+<div class="outline-text-3" id="text-6-2">
+<p>
+Create a code block for your code
+C-c C-c to execute!
+</p>
+
+<p>
+What version of R am I using?
+</p>
+<div class="org-src-container">
+
+<pre class="src src-R">getRversion()
+</pre>
+</div>
+
+<p>
+Here is a peek at the first few lines of the iris data set.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-R">head(iris)
+</pre>
+</div>
+
+<p>
+We have seen a variable and a data frame, how about a list?
+</p>
+<div class="org-src-container">
+
+<pre class="src src-R">R.Version()
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6-3" class="outline-3">
+<h3 id="sec-6-3">Other header arguments</h3>
+<div class="outline-text-3" id="text-6-3">
+</div><div id="outline-container-sec-6-3-1" class="outline-4">
+<h4 id="sec-6-3-1">results</h4>
+<div class="outline-text-4" id="text-6-3-1">
+<p>
+:results [collection] [type] [format] [handling]
+</p>
+<ul class="org-ul">
+<li>collection: value|output
+</li>
+<li>type: table|vector|list|scalar|file|graphics
+</li>
+<li>format: raw|org|html|latex|code|pp|drawer
+</li>
+<li>handling: silent|replace|append|prepend
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-R">head(iris)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6-3-2" class="outline-4">
+<h4 id="sec-6-3-2">session</h4>
+<div class="outline-text-4" id="text-6-3-2">
+<p>
+:session &lt;name&gt;
+</p>
+<ul class="org-ul">
+<li>Make up a name that makes sense to you. 
+</li>
+<li>I put stars around the name so that it looks like an emacs named interactive shell (which it is)
+</li>
+<li>FIELDTRIP: visit the session buffer yourself!
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-R">iris.head&lt;-head(iris)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-R">dim(iris.head)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6-3-3" class="outline-4">
+<h4 id="sec-6-3-3">plots</h4>
+<div class="outline-text-4" id="text-6-3-3">
+<ul class="org-ul">
+<li>Use :results output graphics
+</li>
+<li>A session needs to be named, otherwise the default session closes immediately and you don't see your plot.
+</li>
+<li>A file needs to be specified.
+</li>
+</ul>
+
+
+<div class="figure">
+<p><img src="plot1.png" alt="plot1.png" />
+</p>
+</div>
+
+<ul class="org-ul">
+<li>Lots of additional options avaiable for captions, labels, plot position, plot size, etc.
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-6-3-4" class="outline-4">
+<h4 id="sec-6-3-4">exports</h4>
+<div class="outline-text-4" id="text-6-3-4">
+<p>
+:exports code|results|both|none
+</p>
+</div>
+<ul class="org-ul"><li>:exports code<br  /><div class="outline-text-5" id="text-6-3-4-1">
+<div class="org-src-container">
+
+<pre class="src src-R">head(iris)
+</pre>
+</div>
+</div>
+</li>
+<li>:exports results<br  /><div class="outline-text-5" id="text-6-3-4-2">
+<pre class="example">
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+</pre>
+</div>
+</li>
+<li>:exports both<br  /><div class="outline-text-5" id="text-6-3-4-3">
+<div class="org-src-container">
+
+<pre class="src src-R">head(iris)
+</pre>
+</div>
+
+<pre class="example">
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+</pre>
+</div>
+</li>
+<li>:exports none<br  /></li>
+
+<li>Export to a web page<br  /><div class="outline-text-5" id="text-6-3-4-5">
+<ul class="org-ul">
+<li>Specify which program will open your html file 
+*In my example I want chrome-browser to open my html:
+</li>
+<li><i>M-x customize-variable</i> then type <i>org-file-apps</i>. Then associate Extension \.pdf\' with Command: chrome-browser %s
+</li>
+<li>Don't forget to save and exit!
+</li>
+</ul>
+</div>
+</li>
+<li>Export to a pdf via LaTeX<br  /><div class="outline-text-5" id="text-6-3-4-6">
+<ul class="org-ul">
+<li>Requirements:
+<ul class="org-ul">
+<li>Install LaTeX to pdf (texlive-latex-extra for pdflatex on Ubuntu)
+</li>
+<li>Specify which program will open your pdf file 
+*In my example I want evince to open my pdf:
+</li>
+<li><i>M-x customize-variable</i> then type <i>org-file-apps</i>. Then associate Extension \.pdf\' with Command: evince %s
+</li>
+<li>Don't forget to save and exit!
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</li>
+<li>Export to beamer<br  /><div class="outline-text-5" id="text-6-3-4-7">
+<p>
+An excercise left for the reader. ;p
+</p>
+</div>
+</li></ul>
+</div>
+<div id="outline-container-sec-6-3-5" class="outline-4">
+<h4 id="sec-6-3-5">For more header arguments, see Links &amp; Resources DOUBLE BRACKETS!</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">Literate Programming</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li>Idea of Donald Knuth, 1984, the father of analysis of algorithms
+</li>
+<li>Instead of commenting your code, code to your comments.
+</li>
+<li>You already know how to do it, this document is an example! (sort of)
+</li>
+<li>Reasons for reproducible research
+<ul class="org-ul">
+<li>The paradigm of science
+</li>
+<li>Pure egoism&#x2026; imagine that
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8">Installation</h2>
+<div class="outline-text-2" id="text-8">
+<ul class="org-ul">
+<li>Edit your .emacs file, add this (for example):
+</li>
+</ul>
+<pre class="example">
+;; Org-babel
+(package-initialize)
+(require 'ob)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (R . t)
+  ))
+ 
+(provide 'ob-R)
+
+(setq org-src-fontify-natively t)
+(setq org-confirm-babel-evaluate nil)
+
+(org-reload)
+</pre>
+<ul class="org-ul">
+<li>Take a look at <a href="http://orgmode.org/worg/org-faq.html">http://orgmode.org/worg/org-faq.html</a>
+</li>
+<li>What I showed here was for Ubuntu. Windows (and other Linux) etc. may be different.
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9">Tips and Tricks</h2>
+<div class="outline-text-2" id="text-9">
+<ul class="org-ul">
+<li>Explore the menus
+</li>
+<li>Not just for R! You can org-babel in shell, python, perl, ruby, C/C++ and many, many more.
+Just add them to your .emacs configuration definition.
+</li>
+<li>Attaching to a remove R Server
+</li>
+</ul>
+<pre class="example">
+ /M-x shell/ 
+ /M-x ess-remote/
+ /M-x rename-buffer *something*/
+I like to put stars around the buffer name so that it looks like an interactive shell (which it is)
+</pre>
+<ul class="org-ul">
+<li>To open all org-babel blocks at once
+</li>
+</ul>
+<pre class="example">
+/M-x org-show-block-all/
+</pre>
+<ul class="org-ul">
+<li>Org-mode and Org-babel are still evolving!
+Things you have learned today may change.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10">Links &amp; Resources</h2>
+<div class="outline-text-2" id="text-10">
+<ul class="org-ul">
+<li>Emacs
+</li>
+<li>Org-mode   <a href="http://orgmode.org/">http://orgmode.org/</a>
+<ul class="org-ul">
+<li><a href="http://orgmode.org/talks.html">http://orgmode.org/talks.html</a> Tech Talk at Google video, plus more
+</li>
+<li><a href="http://orgmode.org/worg/index.html">http://orgmode.org/worg/index.html</a> Org-Mode Resources
+</li>
+</ul>
+</li>
+<li>Org-babel  <a href="http://orgmode.org/worg/org-contrib/babel/">http://orgmode.org/worg/org-contrib/babel/</a> General
+<ul class="org-ul">
+<li><a href="http://orgmode.org/manual/Working-With-Source-Code.html">http://orgmode.org/manual/Working-With-Source-Code.html</a> More specific
+</li>
+<li><a href="http://orgmode.org/worg/org-contrib/babel/how-to-use-Org-Babel-for-R.html">http://orgmode.org/worg/org-contrib/babel/how-to-use-Org-Babel-for-R.html</a> with R
+</li>
+<li><a href="http://orgmode.org/manual/Specific-header-arguments.html#Specific-header-arguments">http://orgmode.org/manual/Specific-header-arguments.html#Specific-header-arguments</a> Header arguments
+</li>
+</ul>
+</li>
+<li>Literate Progamming <a href="http://www.cs.tufts.edu/~nr/noweb/">http://www.cs.tufts.edu/~nr/noweb/</a>
+</li>
+<li>Reproducible Research <a href="http://www.rrplanet.com/">http://www.rrplanet.com/</a> 
+<ul class="org-ul">
+<li><a href="http://reproducibleresearch.net/">http://reproducibleresearch.net/</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Tim Lu</p>
+<p class="date">Created: 2013-10-11 Fri 07:45</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.2.1 (<a href="http://orgmode.org">Org</a> mode 8.1.1)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
