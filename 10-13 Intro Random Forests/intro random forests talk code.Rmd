@@ -1,0 +1,82 @@
+% AP Attribution Modeling
+% Kevin Davenport
+% `r as.character(format(Sys.Date(), format="%B %d, %Y"))`
+
+````{r set-options, echo=FALSE}
+#options(width = 180) #console text output width 
+opts_chunk$set(comment = "", cache = T, error = F, warning = F, message = F, echo = T, tidy = F, fig.width = 9, fig.height = 6)
+
+```
+
+In a preliminary look at Acme Pizza's data, we utilize the ensemble method Random Forests for regression. This is a quick conceptual look with non-tuned parameters.
+
+
+### 1. Dataset Loading, Joining, and Missing Value Imputation (k-Means)
+The data available:  
+
+1. Sales
+2. Pulse Survey
+3. Site Feedback Form
+4. Customer Recovery and Resolution
+5. Findings regarding XYZ
+
+```{r Loaad dataframes, echo = T}
+source('bp_dataload.R')
+```
+
+### 2. The Defined Model (Per Location)
+$$BR.Score \approx  f(mean(sales) + mean(pulse.score) + (compliments.count/concerns.count) +$$
+$$mean(guest.recovery.time) + mean(guest.resolution.time))$$
+
+```{r define model, echo= T }
+final_df_model <- final_df[, c("BR.Score..",
+                               "mean.sales",
+                               "mean.pulse.score",
+                               "ratio.compliment.concerns",
+                               "Guest.Recovery.Time.Hours",
+                               "Guest.Resolution.Time.Hours")]
+# Remove Inf from ratio column and drop NA rows from df
+rm(list=setdiff(ls(), "final_df_model"))
+final_df_model$ratio.compliment.concerns[final_df_model$ratio.compliment.concerns == "Inf" ] <- 0
+final_df_model <- final_df_model[complete.cases(final_df_model),] 
+str(final_df_model)
+```
+
+### 3. Random Forests:
+
+Advantages of Random Forests
+
+1. Built-in estimates of accuracy  
+2. Variable importance  
+3. Handles "wide" data (data that has more variables than observations) (no feature reduction necessary like SVM)  
+4. Works well off the shelf  
+
+The importance of a variable can be caused by a possibly complex interaction with other variables. The random forest algorithm estimates the importance of a variable by looking at how much prediction error increases when Out of Bag (OOB) data for that variable is permuted while all others are left unchanged. 
+
+The plot below ranks important variables based on the effect they have on the model's prediction power if randomly permuted. 
+  
+```{r randomforest, echo=T, results='hide'}
+rf <- randomForest(BR.Score.. ~ ., data = final_df_model, do.trace = 100, importance = F, proximity = T)
+# Only two parameters (the number of variables in the random subset
+# at each node and the number of trees in the forest), and is usually not very sensitive to their values.  
+```
+
+```{r randomforest varImpPlot output, echo=T}
+varImpPlot(rf,main=" Average Relative Importance of Variables")
+```
+
+The plots below demonstrate the model's partial dependence on each variable. In other words, they exhibit the relationship between the dependant variable, BR Score, and the the indepedent variables.
+
+```{r partial plots, echo=T}
+imp <- importance(rf)  # get the importance measures
+impvar <- rownames(imp)[order(imp[, 1], decreasing=TRUE)]  # get the sorted names
+#op <- par(mfrow=c(2, 2))
+for (i in seq_along(impvar)) {
+    partialPlot(rf, final_df_model, impvar[i], xlab=impvar[i], ylab = "BR Score",
+                main = paste("Partial Dependence on", impvar[i]), 
+                cex.main= 1) # ylim=c(30, 70)
+}
+#par(op)
+```
+
+
